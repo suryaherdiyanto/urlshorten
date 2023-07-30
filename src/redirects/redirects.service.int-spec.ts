@@ -5,6 +5,7 @@ import { Redirect } from './entities/redirects.entity';
 import { RedirectsModule } from './redirects.module';
 import { Repository } from 'typeorm';
 import { CreateRedirectDto } from './dto/create-redirect.dto';
+import { HttpException } from '@nestjs/common';
 
 describe('RedirectsService', () => {
   let service: RedirectsService;

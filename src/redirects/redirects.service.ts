@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Redirect } from './entities/redirects.entity';
+import { randomString } from '../str.utils';
 
 @Injectable()
 export class RedirectsService {
@@ -12,7 +13,7 @@ export class RedirectsService {
     }
 
     create(full_url: string) {
-        const referrer = 'a';
+        const referrer = randomString(4);
         const redirect = this.repository.create({ full_url, referrer });
 
         return this.repository.save(redirect);
