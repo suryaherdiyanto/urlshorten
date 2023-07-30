@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Redirect } from './entities/redirects.entity';
@@ -17,5 +17,16 @@ export class RedirectsService {
         const redirect = this.repository.create({ full_url, referrer });
 
         return this.repository.save(redirect);
+    }
+
+    async hitReferrer(referrer: string) {
+        const redirect = await this.findByReferrer(referrer);
+
+        if (!redirect) {
+            throw new NotFoundException(`The referrer ${referrer} are not in our record!`);
+        }
+
+        redirect.hit_counts += 1;
+        return this.repository.update(redirect.id, { hit_counts: redirect.hit_counts });
     }
 }

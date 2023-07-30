@@ -5,7 +5,7 @@ import { Redirect } from './entities/redirects.entity';
 import { RedirectsModule } from './redirects.module';
 import { Repository } from 'typeorm';
 import { CreateRedirectDto } from './dto/create-redirect.dto';
-import { HttpException } from '@nestjs/common';
+import { HttpException, NotFoundException } from '@nestjs/common';
 
 describe('RedirectsService', () => {
   let service: RedirectsService;
@@ -57,5 +57,18 @@ describe('RedirectsService', () => {
         referrer: expect.any(String)
       });
     });
+  });
+
+  describe('hitReferrer', function() {
+    it('should increase hit counts by one', async function() {
+      await service.hitReferrer('qweRTy');
+      const redirect = await service.findByReferrer('qweRTy');
+      expect(redirect.hit_counts).toEqual(1);
+    });
+
+    it('should return not found exception if the referrer was not on the record', function(done) {
+      expect(service.hitReferrer('bnm')).rejects.toThrowError(NotFoundException);
+      done();
+    })
   })
 });
