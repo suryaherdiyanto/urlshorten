@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -10,11 +10,16 @@ import { ConfigModule } from '@nestjs/config';
       envFilePath: `.${process.env.NODE_ENV}.env`,
       isGlobal: true
     }),
-    TypeOrmModule.forRoot({
-      database: 'db.sqlite',
-      type: 'sqlite',
-      entities: [`${__dirname}/*/**.entities.ts`],
-      synchronize: true
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => {
+        return {
+          type: 'sqlite',
+          database: config.get<string>('DATABASE_NAME'),
+          synchronize: true,
+          dropSchema: (process.env.NODE_ENV === 'test') ? true:false,
+        }
+      }
     }),
   ],
   controllers: [AppController],
