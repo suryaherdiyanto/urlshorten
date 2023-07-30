@@ -13,7 +13,8 @@ import { ConfigModule } from '@nestjs/config';
     TypeOrmModule.forRoot({
       database: 'db.sqlite',
       type: 'sqlite',
-      entities: [`${__dirname}/*/**.entities.ts`]
+      entities: [`${__dirname}/*/**.entities.ts`],
+      synchronize: true
     }),
   ],
   controllers: [AppController],
