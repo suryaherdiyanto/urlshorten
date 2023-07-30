@@ -19,6 +19,7 @@ import { RedirectsModule } from './redirects/redirects.module';
           database: config.get<string>('DATABASE_NAME'),
           synchronize: true,
           dropSchema: (process.env.NODE_ENV === 'test') ? true:false,
+          autoLoadEntities: true
         }
       }
     }),
