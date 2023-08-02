@@ -1,6 +1,6 @@
 import { ExecutionContext, createParamDecorator } from "@nestjs/common"
 
-export const FlashMessage = createParamDecorator((data: string, context: ExecutionContext) => {
+export const FlashMessage = createParamDecorator((data: unknown, context: ExecutionContext) => {
     const httpRequest = context.switchToHttp().getRequest();
     const session = httpRequest.session;
 
@@ -8,12 +8,8 @@ export const FlashMessage = createParamDecorator((data: string, context: Executi
         return null;
     }
 
-    if (!session.flash[data]) {
-        return null;
-    }
-
-    const message = session.flash[data];
-    session.flash[data] = null;
+    const message = session.flash;
+    session.flash = null;
 
     return message;
 });
