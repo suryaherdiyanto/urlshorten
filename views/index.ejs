@@ -14,6 +14,12 @@
             <div class="col-lg-4 offset-lg-4">
                 <div class="card">
                     <div class="card-body">
+                        <% if (flash.success) { %>
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <%= flash.success %>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                              </div>
+                        <% } %>
                         <div class="card-title">
                             <h4>Simple URL Shorted APP</h4>
                         </div>
@@ -27,6 +33,12 @@
                                 <button type="submit" class="btn btn-sm btn-primary">Get Shortern Link</button>
                             </div>
                         </form>
+                        <% if (flash.data) { %>
+                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                <%= flash.data %>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                              </div>
+                        <% } %>
                     </div>
                 </div>
             </div>
