@@ -14,7 +14,7 @@
             <div class="col-lg-4 offset-lg-4">
                 <div class="card">
                     <div class="card-body">
-                        <% if (flash.success) { %>
+                        <% if (flash?.success) { %>
                             <div class="alert mb-3 alert-success alert-dismissible fade show" role="alert">
                                 <%= flash.success %>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -33,7 +33,7 @@
                                 <button type="submit" class="btn btn-sm btn-primary">Get Shortern Link</button>
                             </div>
                         </form>
-                        <% if (flash.data) { %>
+                        <% if (flash?.data) { %>
                             <div class="alert mt-3 alert-info fade show" role="alert">
                                 <%= flash.data %>
                               </div>
