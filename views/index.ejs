@@ -18,6 +18,7 @@
                             <h4>Simple URL Shorted APP</h4>
                         </div>
                         <form action="/" method="post">
+                            <input type="hidden" name="_csrf" value="<%= csrf %>">
                             <div class="input-group mb-3">
                                 <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-link"></i></span>
                                 <input type="text" class="form-control" placeholder="Enter the link here..." aria-label="Link">
