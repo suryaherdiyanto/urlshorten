@@ -16,6 +16,6 @@ export class AppController {
 
   @Post('/')
   shortenUrl() {
-
+    return 'Hello world';
   }
 }
