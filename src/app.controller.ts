@@ -1,6 +1,6 @@
 import { Controller, Get, Render } from '@nestjs/common';
 import { AppService } from './app.service';
-import { CreateCsrfToken } from './csrf/csrf.decorator';
+import { CreateCsrfToken } from './decorators/csrf.decorator';
 import { Reflector } from '@nestjs/core';
 
 @Controller()
