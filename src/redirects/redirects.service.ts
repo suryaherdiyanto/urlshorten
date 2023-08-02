@@ -27,6 +27,7 @@ export class RedirectsService {
         }
 
         redirect.hit_counts += 1;
-        return this.repository.update(redirect.id, { hit_counts: redirect.hit_counts });
+        this.repository.update(redirect.id, { hit_counts: redirect.hit_counts });
+        return redirect;
     }
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Render, Req, Res, Session } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Render, Req, Res, Session } from '@nestjs/common';
 import { AppService } from './app.service';
 import { CreateCsrfToken } from './decorators/csrf.decorator';
 import { Reflector } from '@nestjs/core';
@@ -33,5 +33,13 @@ export class AppController {
     };
 
     res.redirect('/');
+  }
+
+  @Get('/s/:referrer')
+  async hitReferrer(@Param('referrer') referrer: string, @Res() res: Response) {
+    await this.redirectService.hitReferrer(referrer);
+    const { full_url } = await this.redirectService.findByReferrer(referrer);
+
+    res.redirect(full_url);
   }
 }
