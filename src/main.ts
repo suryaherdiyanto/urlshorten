@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import * as session from 'express-session';
+import * as cookieParser from 'cookie-parser';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
@@ -11,6 +12,9 @@ async function bootstrap() {
   // Setup view engine
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('ejs');
+
+  // Cookie
+  app.use(cookieParser('some-cookie-secret'));
 
   // Setup the session storage
   app.use(session({
