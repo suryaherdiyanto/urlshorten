@@ -1,11 +1,14 @@
-import { Controller, Get, Post, Render } from '@nestjs/common';
+import { Body, Controller, Get, Post, Render, Res } from '@nestjs/common';
 import { AppService } from './app.service';
 import { CreateCsrfToken } from './decorators/csrf.decorator';
 import { Reflector } from '@nestjs/core';
+import { RedirectsService } from './redirects/redirects.service';
+import { CreateRedirectDto } from './redirects/dto/create-redirect.dto';
+import { Response } from 'express';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService, private readonly reflector: Reflector) {}
+  constructor(private readonly appService: AppService, private readonly reflector: Reflector, private readonly redirectService: RedirectsService) {}
 
   @Get()
   @Render('index')
@@ -15,7 +18,10 @@ export class AppController {
   }
 
   @Post('/')
-  shortenUrl() {
-    return 'Hello world';
+  async shortenUrl(@Body() data: CreateRedirectDto, @Res() res: Response) {
+    const { referrer } = await this.redirectService.create(data.full_url);
+    console.log(referrer);
+
+    res.redirect('/');
   }
 }

@@ -7,6 +7,7 @@ import { Redirect } from './entities/redirects.entity';
   providers: [RedirectsService],
   imports: [
     TypeOrmModule.forFeature([Redirect])
-  ]
+  ],
+  exports: [RedirectsService]
 })
 export class RedirectsModule {}
