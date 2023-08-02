@@ -1,4 +1,4 @@
-import { Controller, Get, Render } from '@nestjs/common';
+import { Controller, Get, Post, Render } from '@nestjs/common';
 import { AppService } from './app.service';
 import { CreateCsrfToken } from './decorators/csrf.decorator';
 import { Reflector } from '@nestjs/core';
@@ -12,5 +12,10 @@ export class AppController {
   @CreateCsrfToken()
   getHello(): object {
     return { hello: this.appService.getHello(), csrf: this.reflector.get<string>('csrf', this.getHello)};
+  }
+
+  @Post('/')
+  shortenUrl() {
+
   }
 }

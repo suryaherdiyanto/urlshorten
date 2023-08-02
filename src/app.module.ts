@@ -1,9 +1,10 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { RedirectsModule } from './redirects/redirects.module';
+import { VerifyCsrf } from './middleware/verify-csrf.middleware';
 
 @Module({
   imports: [
@@ -28,4 +29,8 @@ import { RedirectsModule } from './redirects/redirects.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(VerifyCsrf).forRoutes({ path: '*', method: RequestMethod.POST });
+  }
+}
