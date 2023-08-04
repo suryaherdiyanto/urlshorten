@@ -4,7 +4,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import * as session from 'express-session';
 import * as cookieParser from 'cookie-parser';
-import { UnprocessableEntityException, ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, HttpException, HttpStatus } from '@nestjs/common';
 import { ValidationError } from 'class-validator';
 
 async function bootstrap() {
@@ -26,7 +26,9 @@ async function bootstrap() {
 
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, validationError: { value: false }, exceptionFactory: (errors: ValidationError[]) => {
-    return new UnprocessableEntityException(errors);
+    const validationErrors = errors.map((error) => { return { field: error.property, errorMessages: Object.values(error.constraints) } });
+
+    return new HttpException({ message: 'Invalid input', validationErrors }, HttpStatus.BAD_REQUEST);
   } }));
   await app.listen(3000);
 }
