@@ -6,9 +6,11 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
 import { join } from 'path';
+import Tokens from 'csrf';
 
 describe('AppController (e2e)', () => {
   let app: NestExpressApplication;
+  let csrfToken: string;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -36,6 +38,10 @@ describe('AppController (e2e)', () => {
 
       return new HttpException({ message: 'Invalid input', validationErrors }, HttpStatus.BAD_REQUEST);
     } }));
+    const token = new Tokens();
+    const secret = token.secretSync();
+
+    csrfToken = token.create(secret)+'.'+secret;
       await app.init();
     });
 
