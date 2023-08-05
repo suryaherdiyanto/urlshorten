@@ -17,6 +17,7 @@ switch(process.env.NODE_ENV) {
         Object.assign(config, {
             type: 'sqlite',
             database: ':memory:',
+            synchronize: true,
         });
         break;
     case 'production':

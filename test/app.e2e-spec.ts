@@ -7,15 +7,22 @@ import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
 import { join } from 'path';
 import * as Tokens from 'csrf';
+import { Repository } from 'typeorm';
+import { Redirect } from '../src/redirects/entities/redirects.entity';
+import { getRepositoryToken } from '@nestjs/typeorm';
 
 describe('AppController (e2e)', () => {
   let app: NestExpressApplication;
   let csrfToken: string;
+  let redirectRepository: Repository<Redirect>;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
+
+    redirectRepository = moduleFixture.get(getRepositoryToken(Redirect));
+    await redirectRepository.createQueryBuilder().insert().into(Redirect).values([{ referrer: 'qweRTy', full_url: 'https://www.facebook.com/john.doe'}]).execute();
 
     app = moduleFixture.createNestApplication<NestExpressApplication>();
     // Setup view engine
