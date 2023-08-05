@@ -1,10 +1,10 @@
 import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { RedirectsModule } from './redirects/redirects.module';
 import { VerifyCsrf } from './middleware/verify-csrf.middleware';
+import { typeOrmDatabase } from './config/db.config';
 
 @Module({
   imports: [
@@ -12,18 +12,7 @@ import { VerifyCsrf } from './middleware/verify-csrf.middleware';
       envFilePath: `.${process.env.NODE_ENV}.env`,
       isGlobal: true
     }),
-    TypeOrmModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => {
-        return {
-          type: 'sqlite',
-          database: config.get<string>('DATABASE_NAME'),
-          synchronize: true,
-          dropSchema: (process.env.NODE_ENV === 'test') ? true:false,
-          autoLoadEntities: true
-        }
-      }
-    }),
+    typeOrmDatabase(),
     RedirectsModule,
   ],
   controllers: [AppController],

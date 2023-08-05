@@ -6,7 +6,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
 import { join } from 'path';
-import Tokens from 'csrf';
+import * as Tokens from 'csrf';
 
 describe('AppController (e2e)', () => {
   let app: NestExpressApplication;
