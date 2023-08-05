@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Render, Req, Res, Session } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, NotFoundException, Param, Post, Render, Req, Res, Session } from '@nestjs/common';
 import { AppService } from './app.service';
 import { CreateCsrfToken } from './decorators/csrf.decorator';
 import { Reflector } from '@nestjs/core';
@@ -8,6 +8,7 @@ import { Response } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { FlashMessage } from './decorators/flash-message.decorator';
 import { CheckHitDTO } from './redirects/dto/check-hit.dto';
+import { extractReferrerFromURL } from './str.utils';
 
 @Controller()
 export class AppController {
@@ -47,5 +48,17 @@ export class AppController {
   @Post('/check-hits')
   async getTotalHits(@Body() data: CheckHitDTO) {
 
+    if (!data.url.includes(this.config.get<string>('APP_URL'))) {
+      throw new BadRequestException('Seems the URL not from our');
+    }
+
+    const referrer = extractReferrerFromURL(data.url);
+    const redirect = this.redirectService.findByReferrer(referrer);
+
+    if (!redirect) {
+      throw new NotFoundException('The referrer could not be founded');
+    }
+
+    return { data: redirect };
   }
 }
