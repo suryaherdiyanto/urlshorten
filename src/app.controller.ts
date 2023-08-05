@@ -7,6 +7,7 @@ import { CreateRedirectDto } from './redirects/dto/create-redirect.dto';
 import { Response } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { FlashMessage } from './decorators/flash-message.decorator';
+import { CheckHitDTO } from './redirects/dto/check-hit.dto';
 
 @Controller()
 export class AppController {
@@ -41,5 +42,10 @@ export class AppController {
     const { full_url } = await this.redirectService.findByReferrer(referrer);
 
     res.redirect(full_url);
+  }
+
+  @Post('/check-hits')
+  async getTotalHits(@Body() data: CheckHitDTO) {
+
   }
 }
