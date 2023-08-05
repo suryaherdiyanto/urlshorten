@@ -10,3 +10,9 @@ export function randomString(length: 4): string {
 
     return output;
 }
+
+export function extractReferrerFromURL(url: string): string|null {
+    const uri = url.replace(/http(s)*:\/\//, '');
+
+    return uri.split('/s/')[1] || null;
+}
