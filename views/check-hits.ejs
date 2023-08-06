@@ -17,7 +17,7 @@
                         <div class="card-title">
                             <h4>Check the URL hits</h4>
                         </div>
-                        <div id="errorMessage"></div>
+                        <div id="responseMessage"></div>
                         <form action="/check-hits" method="post" id="checkHit">
                             <input type="hidden" name="_csrf" value="<%= csrf %>">
                             <div class="input-group mb-3">
@@ -43,7 +43,7 @@
             let button = document.querySelector('#checkHit button[type=submit]');
             let request = fetch(this.getAttribute('action'), {
                 method: 'POST',
-                body: JSON.stringify({ _csrf: form._csrf.value }),
+                body: JSON.stringify({ _csrf: form._csrf.value, url: form.url.value }),
                 headers: {
                     "Content-Type": 'application/json'
                 }
@@ -55,11 +55,13 @@
                 button.removeAttribute('disabled');
                 button.innerHTML = 'Check Total Hit';
 
+                const responseJson = await response.json();
                 if (response.status === 400) {
-                    const responseJson = await response.json();
                     onValidationError(responseJson);
                     return;
                 }
+
+                onSuccess(responseJson);
 
             }).catch((error) => {
                 console.log("Something went wrong: "+error.message);
@@ -76,7 +78,15 @@
                             <ul>${errorMessages.join('\n')}</li>
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>`;
-            document.getElementById('errorMessage').innerHTML = html;
+            document.getElementById('responseMessage').innerHTML = html;
+        }
+
+        function onSuccess(data) {
+            const html = `<div class="alert mb-3 alert-success alert-dismissible fade show" role="alert">
+                            <ul><li>Total hit for this URL: ${data.data.hit_counts}</li></li>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>`;
+            document.getElementById('responseMessage').innerHTML = html;
         }
     </script>
   </body>
