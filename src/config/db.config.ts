@@ -21,6 +21,15 @@ switch(process.env.NODE_ENV) {
         });
         break;
     case 'production':
+        const options: TypeOrmModuleOptions = {
+            type: 'mysql',
+            database: process.env.DB_NAME,
+            username: process.env.DB_USER,
+            password: process.env.DB_PASSWORD,
+        };
+
+        Object.assign(options);
+
         break;
     default:
         throw new Error('Wrong env');
