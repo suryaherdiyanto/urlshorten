@@ -20,19 +20,13 @@ switch(process.env.NODE_ENV) {
             synchronize: true,
         });
         break;
-    case 'production':
-        const options: TypeOrmModuleOptions = {
+    default:
+        Object.assign(config, {
             type: 'mysql',
             database: process.env.DB_NAME,
             username: process.env.DB_USER,
             password: process.env.DB_PASSWORD,
-        };
-
-        Object.assign(options);
-
-        break;
-    default:
-        throw new Error('Wrong env');
+        });
 }
 
 export const typeOrmDatabase = () => {
