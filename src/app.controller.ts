@@ -46,6 +46,13 @@ export class AppController {
     res.redirect(full_url);
   }
 
+  @Get('/check-hits')
+  @Render('check-hits')
+  @CreateCsrfToken()
+  showCheckHitsForm() {
+    return { csrf: this.reflector.get<string>('csrf', this.showCheckHitsForm)};
+  }
+
   @Post('/check-hits')
   @HttpCode(200)
   async getTotalHits(@Body() data: CheckHitDTO) {
