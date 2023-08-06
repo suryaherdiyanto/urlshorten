@@ -61,6 +61,11 @@
                     return;
                 }
 
+                if (response.status === 404) {
+                    onNotFound(responseJson);
+                    return;
+                }
+
                 onSuccess(responseJson);
 
             }).catch((error) => {
@@ -84,6 +89,14 @@
         function onSuccess(data) {
             const html = `<div class="alert mb-3 alert-success alert-dismissible fade show" role="alert">
                             <ul><li>Total hit for this URL: ${data.data.hit_counts}</li></li>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>`;
+            document.getElementById('responseMessage').innerHTML = html;
+        }
+
+        function onNotFound(response) {
+            const html = `<div class="alert mb-3 alert-warning alert-dismissible fade show" role="alert">
+                            <ul><li>${response.message}</li></li>
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>`;
             document.getElementById('responseMessage').innerHTML = html;
